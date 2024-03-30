@@ -3,6 +3,7 @@ mod alloc;
 mod boid;
 mod game;
 mod palette;
+mod point;
 mod wasm4;
 use game::Game;
 use lazy_static::lazy_static;

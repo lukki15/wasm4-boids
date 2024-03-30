@@ -1,58 +1,6 @@
+use crate::point::Point;
 use crate::wasm4::{line, SCREEN_SIZE};
 use fastrand::Rng;
-
-#[derive(Clone, Copy, PartialEq)]
-pub struct Point {
-    pub x: f32,
-    pub y: f32,
-}
-
-impl Point {
-    pub fn add(&mut self, other: Point) {
-        self.x += other.x;
-        self.y += other.y;
-    }
-    pub fn sub(&mut self, other: Point) {
-        self.x -= other.x;
-        self.y -= other.y;
-    }
-
-    pub fn div(&mut self, n: f32) {
-        self.x /= n;
-        self.y /= n;
-    }
-
-    fn cartesian_to_polar(&self) -> (f32, f32) {
-        let r = (self.x.powi(2) + self.y.powi(2)).sqrt();
-        let theta = self.y.atan2(self.x);
-        (r, theta)
-    }
-
-    pub fn set_magniute(&mut self, radius: f32) {
-        let (_, theta) = self.cartesian_to_polar();
-        self.x = radius * theta.cos();
-        self.y = radius * theta.sin();
-    }
-
-    pub fn limit(&mut self, max_radius: f32) {
-        let (radius, theta) = self.cartesian_to_polar();
-        if radius > max_radius {
-            self.x = max_radius * theta.cos();
-            self.y = max_radius * theta.sin();
-        }
-    }
-
-    pub fn distance(p1: &Point, p2: &Point) -> f32 {
-        let dx = (p1.x - p2.x).abs();
-        let dy = (p1.y - p2.y).abs();
-
-        let screen_size: f32 = SCREEN_SIZE.into();
-        let x_dist = dx.min(screen_size - dx);
-        let y_dist = dy.min(screen_size - dy);
-
-        f32::sqrt(x_dist * x_dist + y_dist * y_dist)
-    }
-}
 
 pub struct Boid {
     id: usize,
@@ -105,20 +53,17 @@ impl Boid {
         }
     }
 
-    pub fn update(&mut self, align: Point, cohesion: Point, seperation: Point) {
+    pub fn update(&mut self, acceleration: &Acceleration) {
         self.position.add(self.velocity);
 
-        let mut acceleration = Point { x: 0.0, y: 0.0 };
-        acceleration.add(align);
-        acceleration.add(cohesion);
-        acceleration.add(seperation);
-        acceleration.limit(Self::MAX_FORCE);
+        let mut acceleration_sum = acceleration.sum();
+        acceleration_sum.limit(Self::MAX_FORCE);
 
-        self.velocity.add(acceleration);
+        self.velocity.add(acceleration_sum);
         self.velocity.limit(Self::MAX_SPEED);
     }
 
-    pub fn align(&self, boids: &[Self]) -> Point {
+    fn align(&self, boids: &[Self]) -> Point {
         const PERCEPTION_RADIUS: f32 = 5.0;
         let mut avg = Point { x: 0.0, y: 0.0 };
         let mut total: u16 = 0;
@@ -144,7 +89,7 @@ impl Boid {
         avg
     }
 
-    pub fn cohesion(&self, boids: &[Self]) -> Point {
+    fn cohesion(&self, boids: &[Self]) -> Point {
         const PERCEPTION_RADIUS: f32 = 5.0;
         let mut avg = Point { x: 0.0, y: 0.0 };
         let mut total: u16 = 0;
@@ -172,7 +117,7 @@ impl Boid {
         avg
     }
 
-    pub fn seperation(&self, boids: &[Self]) -> Point {
+    fn seperation(&self, boids: &[Self]) -> Point {
         const PERCEPTION_RADIUS: f32 = 5.0;
         let mut avg = Point { x: 0.0, y: 0.0 };
         let mut total: u16 = 0;
@@ -198,5 +143,29 @@ impl Boid {
         }
 
         avg
+    }
+}
+
+pub struct Acceleration {
+    align: crate::boid::Point,
+    cohesion: crate::boid::Point,
+    seperation: crate::boid::Point,
+}
+
+impl Acceleration {
+    pub fn calc(boid: &Boid, boids: &[Boid]) -> Self{
+        Acceleration {
+            align: boid.align(boids),
+            cohesion: boid.cohesion(boids),
+            seperation: boid.seperation(boids),
+        }
+    }
+
+    fn sum(&self) -> Point {
+        let mut acceleration = Point { x: 0.0, y: 0.0 };
+        acceleration.add(self.align);
+        acceleration.add(self.cohesion);
+        acceleration.add(self.seperation);
+        acceleration
     }
 }

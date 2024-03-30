@@ -16,16 +16,12 @@ impl Game {
     }
 
     pub fn update(&mut self) {
-        let aligns: [crate::boid::Point; BOID_COUNT] =
-            core::array::from_fn(|i| self.boids[i].align(&self.boids));
-        let cohesion: [crate::boid::Point; BOID_COUNT] =
-            core::array::from_fn(|i| self.boids[i].cohesion(&self.boids));
-        let seperations: [crate::boid::Point; BOID_COUNT] =
-            core::array::from_fn(|i| self.boids[i].seperation(&self.boids));
+        let acceleration : [crate::boid::Acceleration; BOID_COUNT] 
+            = core::array::from_fn(|i| crate::boid::Acceleration::calc(&self.boids[i], &self.boids));
 
         for (i, boid) in self.boids.iter_mut().enumerate() {
             boid.edges();
-            boid.update(aligns[i], cohesion[i], seperations[i]);
+            boid.update(&acceleration[i]);
             boid.draw();
         }
     }
