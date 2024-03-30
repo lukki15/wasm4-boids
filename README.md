@@ -2,6 +2,8 @@
 
 A boids flock simulation written in Rust for the [WASM-4](https://wasm4.org) fantasy console.
 
+[RESULT](https://lukki15.github.io/wasm4-boids/)
+
 ## Building
 
 Build the cart by running:
