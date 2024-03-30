@@ -16,8 +16,8 @@ impl Game {
     }
 
     pub fn update(&mut self) {
-        let acceleration : [crate::boid::Acceleration; BOID_COUNT] 
-            = core::array::from_fn(|i| crate::boid::Acceleration::calc(&self.boids[i], &self.boids));
+        let acceleration: [crate::boid::Acceleration; BOID_COUNT] =
+            core::array::from_fn(|i| crate::boid::Acceleration::calc(&self.boids[i], &self.boids));
 
         for (i, boid) in self.boids.iter_mut().enumerate() {
             boid.edges();

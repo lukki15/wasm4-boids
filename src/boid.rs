@@ -39,7 +39,7 @@ impl Boid {
     }
 
     pub fn edges(&mut self) {
-        let screen_size:f32 = SCREEN_SIZE.into();
+        let screen_size: f32 = SCREEN_SIZE.into();
         if self.position.x < 0.0 {
             self.position.x += screen_size;
         } else if self.position.x > f32::from(SCREEN_SIZE - 1) {
@@ -153,7 +153,7 @@ pub struct Acceleration {
 }
 
 impl Acceleration {
-    pub fn calc(boid: &Boid, boids: &[Boid]) -> Self{
+    pub fn calc(boid: &Boid, boids: &[Boid]) -> Self {
         Acceleration {
             align: boid.align(boids),
             cohesion: boid.cohesion(boids),
