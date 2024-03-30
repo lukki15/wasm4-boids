@@ -1,7 +1,7 @@
 use crate::wasm4::{line, SCREEN_SIZE};
 use fastrand::Rng;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, PartialEq)]
 pub struct Point {
     pub x: f32,
     pub y: f32,
