@@ -4,6 +4,18 @@ A boids flock simulation written in Rust for the [WASM-4](https://wasm4.org) fan
 
 [RESULT](https://lukki15.github.io/wasm4-boids/)
 
+## Setup
+
+install w4 and wasm-opt
+```shell
+sh .devcontainer/postCreateCommand.sh
+```
+
+add wasm32 target
+```shell
+rustup target add wasm32-unknown-unknown
+```
+
 ## Building
 
 Build the cart by running:
