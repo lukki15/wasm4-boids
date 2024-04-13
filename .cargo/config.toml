@@ -13,3 +13,6 @@ rustflags = [
     # Bump this value, 16-byte aligned, if the framebuffer gets corrupted.
     "-C", "link-arg=-zstack-size=29504",
 ]
+
+[alias]
+run_tests = "test --target x86_64-unknown-linux-gnu --no-default-features"

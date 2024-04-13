@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 #[cfg(feature = "buddy-alloc")]
 mod alloc;
 mod boid;

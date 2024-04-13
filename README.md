@@ -42,6 +42,12 @@ wasm-opt target/wasm32-unknown-unknown/release/cart.wasm -o boids-cart-opt.wasm 
 w4 bundle boids-cart-opt.wasm --title "wasm-4 boids" --html index.html
 ```
 
+## Tests
+
+```shell
+cargo run_tests
+```
+
 ## Links
 
 - [Documentation](https://wasm4.org/docs): Learn more about WASM-4.
