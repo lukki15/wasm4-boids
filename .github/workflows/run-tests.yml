@@ -1,9 +1,9 @@
-name: Run tests
+name: Run Tests
 
 on: [push]
 
 jobs:
-  build:
+  test:
     name: tests
     runs-on: ubuntu-latest
     steps:

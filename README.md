@@ -1,4 +1,6 @@
 # wasm4-boids
+[![Run Tests](https://github.com/lukki15/wasm4-boids/actions/workflows/run-tests.yml/badge.svg)](https://github.com/lukki15/wasm4-boids/actions/workflows/run-tests.yml)
+[![Deploy Pages](https://github.com/lukki15/wasm4-boids/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/lukki15/wasm4-boids/actions/workflows/deploy-pages.yml)
 
 A boids flock simulation written in Rust for the [WASM-4](https://wasm4.org) fantasy console.
 
